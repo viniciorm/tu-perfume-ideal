@@ -8,6 +8,8 @@ import { ProductDetailModal } from './components/ProductDetailModal';
 import { SelectionSummary } from './components/SelectionSummary';
 import { Footer } from './components/Footer';
 import { FAQ } from './components/FAQ';
+import { FragranceMap } from './components/FragranceMap';
+import { AromaBlog } from './components/AromaBlog';
 import { products } from './data/products';
 import { searchProducts, getProductScore } from './utils/matching';
 import { Product } from './types/product';
@@ -117,9 +119,9 @@ export default function App() {
 
         {/* Resultados */}
         {(!showWizard || wizardAnswers.format) && (
-          <div>
+          <div id="catalogo">
             <div className="flex justify-between items-end mb-6">
-              <h2 className="text-2xl font-bold text-slate-800">
+              <h2 className="text-2xl font-bold text-[#42362C]">
                 {searchTerm ? 'Resultados de búsqueda' : 
                  showWizard ? 'Nuestras Sugerencias' : 
                  'Catálogo Destacado'}
@@ -139,10 +141,10 @@ export default function App() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-white rounded-lg border">
-                <p className="text-lg text-slate-500 mb-6">No encontramos perfumes que coincidan exactamente con tu búsqueda.</p>
+              <div className="text-center py-20 bg-white rounded-lg border border-[#C6B9A5]/20">
+                <p className="text-lg text-slate-500 mb-6 font-medium">No encontramos perfumes que coincidan exactamente con tu búsqueda.</p>
                 <Button 
-                  className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold"
+                  className="bg-[#25D366] hover:bg-[#128C7E] text-white font-bold px-8 rounded-full"
                   onClick={() => window.open(createNotFoundWhatsappLink(searchTerm, wizardAnswers), "_blank")}
                 >
                   Pedir ayuda por WhatsApp
@@ -152,6 +154,13 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {!showWizard && !searchTerm && (
+        <div className="container mx-auto px-4">
+          <FragranceMap onAddProduct={handleSelectProduct} />
+          <AromaBlog />
+        </div>
+      )}
 
       {!showWizard && !searchTerm && <FAQ />}
       

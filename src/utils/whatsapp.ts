@@ -9,7 +9,8 @@ function buildUrl(text: string): string {
 }
 
 export function createGeneralWhatsappLink(): string {
-  const text = `Hola, quiero hacer una consulta sobre los perfumes alternativos.`;
+  const text = `✨ *Hola Parfums de Parfums!*
+Quiero hacer una consulta general sobre sus alternativas de alta perfumería.`;
   return buildUrl(text);
 }
 
@@ -17,14 +18,29 @@ export function createProductWhatsappLink(product: Product): string {
   const priceInfo = priceList[product.priceKey as keyof typeof priceList];
   const price = priceInfo ? formatPrice(priceInfo.sale) : "Consultar";
 
-  const text = `Hola, quiero consultar por este perfume:
+  let lineIndicator = "🌸 Clásica Dama";
+  if (product.code.startsWith("Q-0") || product.code.startsWith("Q0")) {
+    lineIndicator = "✨ Colección EXCLUSIVA RED";
+  } else if (product.code.startsWith("Q-5") || product.code.startsWith("Q5")) {
+    lineIndicator = "💎 Colección EXCLUSIVA BLACK";
+  } else if (product.code.startsWith("H")) {
+    lineIndicator = "💼 Clásica Varón";
+  } else if (product.code.startsWith("L")) {
+    lineIndicator = "💧 Lavit Body Splash";
+  } else if (product.code.startsWith("J")) {
+    lineIndicator = "🦄 Teen Line";
+  }
 
-Producto: ${product.code} - Aroma inspirado en ${product.inspiredBy}
-Línea: ${product.line}
-Formato: ${product.format}
-Precio estimado: ${price}
+  const text = `✨ *PARFUMS DE PARFUMS* ✨
+_Consulta de Fragancia_
 
-¿Tienes stock disponible?`;
+• *Código:* ${product.code}
+• *Inspiración:* ${product.inspiredBy} (${product.brandReference || "Referencia"})
+• *Colección/Línea:* ${lineIndicator}
+• *Formato:* ${product.format}
+• *Precio:* ${price}
+
+¿Tienen stock disponible para entrega/envío en Chile?`;
 
   return buildUrl(text);
 }
@@ -33,23 +49,55 @@ export function createSelectionWhatsappLink(
   selectedProducts: { product: Product; quantity: number }[],
   wizardAnswers?: WizardAnswers
 ): string {
-  let text = `Hola, quiero consultar por estos perfumes:\n\n`;
+  let text = `✨ *PARFUMS DE PARFUMS - MI PEDIDO* ✨\n`;
+  text += `¡Hola! He seleccionado estas fragancias exclusivas en la web:\n\n`;
 
+  let totalAmount = 0;
+  
   selectedProducts.forEach(({ product, quantity }, index) => {
     const priceInfo = priceList[product.priceKey as keyof typeof priceList];
-    const price = priceInfo ? formatPrice(priceInfo.sale) : "Consultar";
-    text += `${index + 1}. ${product.code} - Aroma inspirado en ${product.inspiredBy} - ${product.format} - ${price} (x${quantity})\n`;
+    const priceVal = priceInfo ? priceInfo.sale : 0;
+    const itemTotal = priceVal * quantity;
+    totalAmount += itemTotal;
+
+    const priceText = priceInfo ? formatPrice(priceInfo.sale) : "Consultar";
+    
+    let lineIndicator = "🌸 Clásica Dama";
+    if (product.code.startsWith("Q-0") || product.code.startsWith("Q0")) {
+      lineIndicator = "🔴 Colección RED";
+    } else if (product.code.startsWith("Q-5") || product.code.startsWith("Q5")) {
+      lineIndicator = "⚫ Colección BLACK";
+    } else if (product.code.startsWith("H")) {
+      lineIndicator = "🔵 Clásica Varón";
+    } else if (product.code.startsWith("L")) {
+      lineIndicator = "💧 Lavit Splash";
+    } else if (product.code.startsWith("J")) {
+      lineIndicator = "🦄 Teen Line";
+    }
+
+    text += `*${index + 1}. [${product.code}] ${product.inspiredBy}*\n`;
+    text += `   • *Línea:* ${lineIndicator}\n`;
+    text += `   • *Formato:* ${product.format}\n`;
+    text += `   • *Precio:* ${priceText} x${quantity}\n`;
+    if (priceVal > 0) {
+      text += `   • *Subtotal:* ${formatPrice(itemTotal)}\n`;
+    }
+    text += `\n`;
   });
 
+  text += `──────────────────\n`;
+  text += `💰 *TOTAL ESTIMADO:* ${formatPrice(totalAmount)}\n`;
+  text += `──────────────────\n`;
+
   if (wizardAnswers && Object.keys(wizardAnswers).length > 0) {
-    text += `\nMis preferencias fueron:\n`;
-    if (wizardAnswers.gender) text += `Género: ${wizardAnswers.gender}\n`;
-    if (wizardAnswers.aromaType) text += `Familia/Aroma: ${wizardAnswers.aromaType}\n`;
-    if (wizardAnswers.intensity) text += `Intensidad: ${wizardAnswers.intensity}\n`;
-    if (wizardAnswers.occasion) text += `Uso: ${wizardAnswers.occasion}\n`;
+    text += `\n🎯 *Preferencia del Asesor de Fragancias:*\n`;
+    if (wizardAnswers.gender) text += `• Para: ${wizardAnswers.gender}\n`;
+    if (wizardAnswers.aromaType) text += `• Familias: ${wizardAnswers.aromaType}\n`;
+    if (wizardAnswers.intensity) text += `• Intensidad: ${wizardAnswers.intensity}\n`;
+    if (wizardAnswers.occasion) text += `• Ocasión: ${wizardAnswers.occasion}\n`;
   }
 
-  text += `\n¿Tienes stock disponible y cómo puedo comprar?`;
+  text += `\n¿Tienen disponibilidad para coordinar el despacho en Chile? ¡Muchas gracias!`;
 
   return buildUrl(text);
 }
@@ -58,20 +106,23 @@ export function createNotFoundWhatsappLink(
   searchText?: string,
   wizardAnswers?: WizardAnswers
 ): string {
-  let text = `Hola, estoy buscando un perfume alternativo con estas características:\n\n`;
+  let text = `✨ *PARFUMS DE PARFUMS - CONSULTA ESPECIAL* ✨\n`;
+  text += `Hola, estoy buscando una fragancia equivalente personalizada y no la encontré en el buscador:\n\n`;
 
   if (searchText) {
-    text += `Búsqueda: ${searchText}\n`;
+    text += `• *Perfume buscado:* ${searchText}\n`;
   }
 
   if (wizardAnswers) {
-    if (wizardAnswers.gender) text += `Género: ${wizardAnswers.gender}\n`;
-    if (wizardAnswers.aromaType) text += `Familia/Aroma: ${wizardAnswers.aromaType}\n`;
-    if (wizardAnswers.intensity) text += `Intensidad: ${wizardAnswers.intensity}\n`;
-    if (wizardAnswers.occasion) text += `Uso: ${wizardAnswers.occasion}\n`;
+    text += `\n*Mis preferencias elegidas:*\n`;
+    if (wizardAnswers.gender) text += `• Género: ${wizardAnswers.gender}\n`;
+    if (wizardAnswers.aromaType) text += `• Notas aromáticas: ${wizardAnswers.aromaType}\n`;
+    if (wizardAnswers.intensity) text += `• Intensidad: ${wizardAnswers.intensity}\n`;
+    if (wizardAnswers.occasion) text += `• Ocasión: ${wizardAnswers.occasion}\n`;
   }
 
-  text += `\n¿Me puedes ayudar a encontrar una alternativa?`;
+  text += `\n¿Tienen alguna alternativa recomendada en stock que se parezca a mis gustos?`;
 
   return buildUrl(text);
 }
+

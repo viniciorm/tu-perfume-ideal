@@ -1,76 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 99%; /* Blanco escarchado muy sutil */
+    --foreground: 224 25% 12%; /* Gris oscuro sofisticado */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 224 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 224 25% 12%;
 
-    --primary: 221 68% 28%; /* Azul profundo #173B7A */
-    --primary-foreground: 210 40% 98%;
+    --primary: 36 22% 28%; /* Champagne-Bronce profundo #42362C */
+    --primary-foreground: 36 30% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 36 33% 97%; /* Crema sedosa #F9F7F4 */
+    --secondary-foreground: 36 22% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 36 15% 94%; /* Crema muy suave desaturada */
+    --muted-foreground: 36 10% 45%;
 
-    --accent: 42 58% 63%; /* Dorado suave #D7B56D */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 34 35% 72%; /* Oro platino cepillado #C6B9A5 */
+    --accent-foreground: 36 22% 20%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 68% 28%;
+    --border: 36 20% 90%; /* Borde crema sutil */
+    --input: 36 20% 90%;
+    --ring: 36 22% 28%;
 
-    --radius: 0.5rem;
+    --radius: 1rem; /* Esquinas suavizadas de lujo */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* No soporta modo oscuro por diseño de marca minimalista blanca, pero definimos tokens por compatibilidad */
+    --background: 36 22% 10%;
+    --foreground: 36 30% 98%;
+    --card: 36 22% 12%;
+    --card-foreground: 36 30% 98%;
+    --popover: 36 22% 12%;
+    --popover-foreground: 36 30% 98%;
+    --primary: 36 30% 98%;
+    --primary-foreground: 36 22% 10%;
+    --secondary: 36 20% 18%;
+    --secondary-foreground: 36 30% 98%;
+    --muted: 36 20% 18%;
+    --muted-foreground: 36 10% 65%;
+    --accent: 34 35% 72%;
+    --accent-foreground: 36 22% 10%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 36 30% 98%;
+    --border: 36 20% 25%;
+    --input: 36 20% 25%;
+    --ring: 36 30% 98%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    font-family: 'Outfit', sans-serif;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-accent/30;
   }
+  h1, h2, h3, h4, .font-serif-luxury {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+/* Clases de Estilo Premium Especiales */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(198, 185, 165, 0.25);
+  border-color: rgba(198, 185, 165, 0.4);
+}
+
+.glow-subtle {
+  box-shadow: 0 0 40px 0 rgba(198, 185, 165, 0.15);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #705E49 0%, #B8A385 50%, #8C785C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(198, 185, 165, 0.4);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(198, 185, 165, 0.6);
 }
