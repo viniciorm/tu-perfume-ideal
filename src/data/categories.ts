@@ -35,8 +35,10 @@ export const CATEGORIES = {
     "50 ml",
     "20 ml",
     "Teen 50 ml",
-    "Red & Black 100 ml",
+    "Red Parfums 100 ml",
+    "Black Parfums 100 ml",
     "Lavit / Body Splash",
+    "Colonia S-400",
     "Ver todos"
   ]
 };

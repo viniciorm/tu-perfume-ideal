@@ -28,6 +28,7 @@ export type Product = {
   temperature?: "Fresco" | "Cálido" | "Neutro";
   format: string;
   priceKey: keyof typeof priceList;
+  customPrice?: number;
   stock: "Disponible" | "Pocas unidades" | "Agotado" | "Consultar";
   image: string;
   tags: string[];

@@ -27,7 +27,21 @@ export function ProductDetailModal({ product, isOpen, onClose, onSelect }: Produ
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-primary">{product.name}</DialogTitle>
+          <DialogTitle className="text-2xl text-primary flex flex-wrap items-center gap-2">
+            {product.name}
+            {product.code.startsWith("Q") && (
+              <Badge 
+                variant="secondary" 
+                className={`text-[10px] font-bold ${
+                  product.line === "Red"
+                    ? "bg-red-50 text-red-700 border border-red-200"
+                    : "bg-zinc-900 text-zinc-100 border border-zinc-700"
+                }`}
+              >
+                {product.line === "Red" ? "Red Parfums" : "Black Parfums"}
+              </Badge>
+            )}
+          </DialogTitle>
           <DialogDescription>
             Alternativo inspirado en {product.inspiredBy} de {product.brandReference}
           </DialogDescription>
@@ -71,7 +85,7 @@ export function ProductDetailModal({ product, isOpen, onClose, onSelect }: Produ
             <div>
               <span className="block text-slate-500 mb-1">Familia Olfativa</span>
               <div className="flex flex-wrap gap-1">
-                {product.family.map(f => <Badge key={f} variant="outline" className="text-xs">{f}</Badge>)}
+                {product.family.map((f, idx) => <Badge key={`${f}-${idx}`} variant="outline" className="text-xs">{f}</Badge>)}
               </div>
             </div>
             <div>

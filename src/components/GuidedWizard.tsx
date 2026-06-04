@@ -92,10 +92,16 @@ export function GuidedWizard({ answers, onChange, onComplete }: GuidedWizardProp
   }
 
   if (!answers.format) {
+    const availableFormats = CATEGORIES.formats.filter(f => {
+      if (f === "Red Parfums 100 ml" && answers.gender === "Hombre") return false;
+      if (f === "Black Parfums 100 ml" && answers.gender === "Mujer") return false;
+      return true;
+    });
+
     return (
       <WizardStep 
         title="¿Qué formato prefieres?"
-        options={CATEGORIES.formats}
+        options={availableFormats}
         onSelect={(val) => {
           updateAnswer("format", val);
           setTimeout(onComplete, 100);

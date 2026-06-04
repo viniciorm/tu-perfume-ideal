@@ -20,7 +20,7 @@ export const priceList = {
     sale: 8000,
   },
   redBlack100: {
-    label: "Perfume Red & Black 100 ml",
+    label: "Perfume Premium 100 ml",
     cost: 13000,
     sale: 26000,
   },
@@ -29,10 +29,20 @@ export const priceList = {
     cost: 3000,
     sale: 6000,
   },
+  lavitBodySplash50: {
+    label: "Lavit Body Splash 50 ml",
+    cost: 1000,
+    sale: 2000,
+  },
   lavitHydraCream50: {
     label: "Lavit Hydra Cream 50 ml",
     cost: 2300,
     sale: 3900,
+  },
+  lavitPack: {
+    label: "Pack Lavit (Body Splash + Hydra Cream)",
+    cost: 4250,
+    sale: 8500,
   },
   coloniaS400: {
     label: "Colonia S-400",

@@ -7,10 +7,297 @@ import { ProductDetailModal } from "./ProductDetailModal";
 
 interface FragranceMapProps {
   onAddProduct: (product: Product) => void;
+  initialGender?: "Mujer" | "Hombre";
 }
 
-export function FragranceMap({ onAddProduct }: FragranceMapProps) {
-  const [gender, setGender] = useState<"Mujer" | "Hombre">("Mujer");
+const getQuadrantStyles = (gender: "Mujer" | "Hombre", quadrantId: string, code?: string) => {
+  const isPremium = code?.startsWith("Q");
+
+  if (isPremium) {
+    return {
+      cardBg: "bg-gradient-to-br from-[#FAF6EE] via-white to-[#FAF6EE]/60 hover:from-[#F6EEDC] hover:via-white hover:to-[#FAF6EE] shadow-[0_4px_25px_rgba(212,175,55,0.08)] hover:shadow-[0_8px_35px_rgba(212,175,55,0.18)] transition-all duration-300",
+      cardBorder: "border-[#D4AF37]/70 hover:border-[#D4AF37] ring-1 ring-[#D4AF37]/20 hover:ring-[#D4AF37]/40",
+      codeBg: "bg-gradient-to-r from-[#B8860B] via-[#D4AF37] to-[#B8860B] text-white shadow-sm font-semibold",
+      textColor: "text-[#5C4017]",
+      badgeBg: "bg-amber-50 text-[#8B6508] border-[#D4AF37]/30 font-semibold"
+    };
+  }
+
+  if (gender === "Mujer") {
+    switch (quadrantId) {
+      case "q1": // Ligero & Fresco-Frutal (Orange/Amber)
+        return {
+          cardBg: "bg-gradient-to-br from-amber-50/20 to-orange-50/20 hover:from-amber-50/40 hover:to-orange-50/40",
+          cardBorder: "border-orange-200/50 hover:border-orange-300/80 hover:shadow-md",
+          codeBg: "bg-orange-600 text-white",
+          textColor: "text-orange-950",
+          badgeBg: "bg-orange-50 text-orange-700 border-orange-100/80"
+        };
+      case "q2": // Ligero & Floral-Verde (Green/Emerald)
+        return {
+          cardBg: "bg-gradient-to-br from-emerald-50/20 to-teal-50/20 hover:from-emerald-50/40 hover:to-teal-50/40",
+          cardBorder: "border-emerald-200/50 hover:border-emerald-300/80 hover:shadow-md",
+          codeBg: "bg-emerald-600 text-white",
+          textColor: "text-emerald-950",
+          badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-100/80"
+        };
+      case "q3": // Intenso & Chypre-Floral (Pink/Rose)
+        return {
+          cardBg: "bg-gradient-to-br from-rose-50/20 to-pink-50/20 hover:from-rose-50/40 hover:to-pink-50/40",
+          cardBorder: "border-rose-200/50 hover:border-rose-300/80 hover:shadow-md",
+          codeBg: "bg-rose-600 text-white",
+          textColor: "text-rose-950",
+          badgeBg: "bg-rose-50 text-rose-700 border-rose-100/80"
+        };
+      case "q4": // Intenso & Cálido-Oriental (Purple/Violet)
+        return {
+          cardBg: "bg-gradient-to-br from-purple-50/20 to-violet-50/20 hover:from-purple-50/40 hover:to-violet-50/40",
+          cardBorder: "border-purple-200/50 hover:border-purple-300/80 hover:shadow-md",
+          codeBg: "bg-purple-600 text-white",
+          textColor: "text-purple-950",
+          badgeBg: "bg-purple-50 text-purple-700 border-purple-100/80"
+        };
+      default:
+        return {
+          cardBg: "bg-[#FAF9F6]/40 hover:bg-white hover:shadow-md",
+          cardBorder: "border-slate-100 hover:border-[#C6B9A5]/30",
+          codeBg: "bg-[#42362C] text-white",
+          textColor: "text-[#42362C]",
+          badgeBg: "bg-slate-100 text-slate-600 border-slate-200"
+        };
+    }
+  } else {
+    // Masculinas (Hombre)
+    switch (quadrantId) {
+      case "q1": // Ligero & Cítrico-Acuático (Cyan/Blue)
+        return {
+          cardBg: "bg-gradient-to-br from-cyan-50/20 to-blue-50/20 hover:from-cyan-50/40 hover:to-blue-50/40",
+          cardBorder: "border-cyan-200/50 hover:border-cyan-300/80 hover:shadow-md",
+          codeBg: "bg-cyan-600 text-white",
+          textColor: "text-cyan-950",
+          badgeBg: "bg-cyan-50 text-cyan-700 border-cyan-100/80"
+        };
+      case "q2": // Ligero & Maderoso-Aromático (Emerald/Green)
+        return {
+          cardBg: "bg-gradient-to-br from-emerald-50/20 to-green-50/20 hover:from-emerald-50/40 hover:to-green-50/40",
+          cardBorder: "border-emerald-200/50 hover:border-emerald-300/80 hover:shadow-md",
+          codeBg: "bg-emerald-600 text-white",
+          textColor: "text-emerald-950",
+          badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-100/80"
+        };
+      case "q3": // Intenso & Fougère-Especiado (Violet/Indigo)
+        return {
+          cardBg: "bg-gradient-to-br from-violet-50/20 to-indigo-50/20 hover:from-violet-50/40 hover:to-indigo-50/40",
+          cardBorder: "border-violet-200/50 hover:border-violet-300/80 hover:shadow-md",
+          codeBg: "bg-violet-600 text-white",
+          textColor: "text-violet-950",
+          badgeBg: "bg-violet-50 text-violet-700 border-violet-100/80"
+        };
+      case "q4": // Intenso & Oriental-Maderoso (Amber/Orange)
+        return {
+          cardBg: "bg-gradient-to-br from-amber-100/20 to-orange-50/20 hover:from-amber-100/40 hover:to-orange-50/40",
+          cardBorder: "border-amber-200/50 hover:border-amber-300/80 hover:shadow-md",
+          codeBg: "bg-amber-600 text-white",
+          textColor: "text-amber-950",
+          badgeBg: "bg-amber-50 text-amber-850 border-amber-200"
+        };
+      default:
+        return {
+          cardBg: "bg-[#FAF9F6]/40 hover:bg-white hover:shadow-md",
+          cardBorder: "border-slate-100 hover:border-[#C6B9A5]/30",
+          codeBg: "bg-[#42362C] text-white",
+          textColor: "text-[#42362C]",
+          badgeBg: "bg-slate-100 text-slate-600 border-slate-200"
+        };
+    }
+  }
+};
+
+const olfactoryFamilies = [
+  { id: "citrico", name: "CÍTRICO", color: "bg-[#95C15E]", text: "text-white", desc: "Las fragancias cítricas, antiguas y abundantes, son composiciones basadas en el limón, la bergamota, el pomelo o la mandarina, entre otros cítricos, que se suman a notas aromáticas y ácidas en el caso de las fragancias masculinas y a notas florales en el caso de los perfumes de mujer." },
+  { id: "frutal", name: "FRUTAL", color: "bg-[#E61575]", text: "text-white", desc: "El grupo olfativo frutal presenta notas de las más diversas frutas, como melocotones, fresas, piñas, melón, sandía, naranjas, o sea todas las frutas que tienen su aroma característico en la pulpa. Las fragancias de este grupo olfativo se reconocen por ser alegres y vibrantes, y por esta razón se encuentran más en los perfumes femeninos joviales." },
+  { id: "chypre", name: "CHYPRE", color: "bg-[#F2C89E]", text: "text-[#5C4017]", desc: "El nombre de este grupo olfativo proviene de la fragancia Coty Chipre, creada en 1917. Su agudo aroma está basado en la armonía entre el musgo de roble, labdanum, el pachulí y la bergamota." },
+  { id: "floral", name: "FLORAL", color: "bg-[#F08619]", text: "text-white", desc: "Este amplio grupo olfativo abarca multitud de composiciones de corazón floral: flor recién cortada, flores con acordes acuáticos, verde o apolvados, además de las variedades floral-afrutada, floral-dulce y floral con aldehídos." },
+  { id: "verde", name: "VERDE", color: "bg-[#8CBB57]", text: "text-white", desc: "Las fragancias de este grupo desprenden un inconfundible aroma a hojas tiernas y hierba recién cortada, al que en ocasiones se suman el de té verde y de frutas sin madurar. La nota verde infunde frescor y optimismo, evoca lo natural, lo libre y lo juvenil." },
+  { id: "almizclado", name: "ALMIZCLADO", color: "bg-[#6A1A1A]", text: "text-white", desc: "Lo que conocemos como almizcle o musk, que encontramos en la mayoría de perfumes es un fijador que además tiene un olor muy característico. Es un tipo de aroma que se identifica como animal o amaderado." },
+  { id: "maderoso", name: "MADEROSO", color: "bg-[#EE7D17]", text: "text-white", desc: "Una composición que contenga ricas notas amaderadas en el corazón del perfume suele acentuarse con más notas de madera de fondo. El sándalo (cálido y misterioso), el cedro (seco y brusco) y el vetiver, junto a otros tipos de madera exótica y balsámica, se acompañan por lo general de notas cítricas y aromáticas." },
+  { id: "oriental", name: "ORIENTAL", color: "bg-[#FDC500]", text: "text-[#5C4017]", desc: "Las fragancias orientales, con el ámbar como nota dominante, forman un grupo específico gracias a su gran calidez y a su sensualidad. son ricas composiciones que incluyen sustancias embriagadoras e intensas como el almizcle, la vainilla, resinas y maderas inusuales, a menudo acompañadas por especias y flores exóticas." },
+  { id: "fougere", name: "FOUGERE", color: "bg-[#61B291]", text: "text-white", desc: "Helecho en castellano, designa a aquellos perfumes que evocan el ambiente de un bosque, con acordes de cumarina con lavanda y musgo de encina. Sus aromas son húmedos, frescos, amaderados y verdes con tonos dulces y amargos simultáneamente." },
+  { id: "aldehidico", name: "ALDEHÍDICO", color: "bg-[#3BBFE3]", text: "text-white", desc: "Son compuestos sintéticos que se emplean en la perfumería para crear fragancias con el tipo de olor a limpio o al jabón. El representante más glamoroso de este grupo es el icónico Chanel Nº5." },
+  { id: "aromatico", name: "AROMÁTICO", color: "bg-[#3B98D5]", text: "text-white", desc: "Las notas aromáticas suelen ser mezclas de salvia, romero, comino, lavanda y otras plantas con un intenso aroma a hierba y a especias. A menudo se combinan con notas cítricas y especiadas. Las composiciones más frecuentes se encuentran en las fragancias para hombres." },
+  { id: "especiado", name: "ESPECIADO", color: "bg-[#E32636]", text: "text-white", desc: "Muy rica en especias, éstas incluyen variedades calientes como la canela, clavo de olor y especias finas como el cardamomo y el cilantro. en cuanto al comino, es una especia un poco diferente, porque aporta una nota animal a las composiciones." }
+];
+
+const getFamilyColor = (familyStr: string) => {
+  const firstWord = familyStr.split(" ")[0].toLowerCase();
+  
+  const mapping: Record<string, string> = {
+    "cítrico": "bg-[#95C15E] text-white",
+    "frutal": "bg-[#E61575] text-white",
+    "chypre": "bg-[#F2C89E] text-[#5C4017]",
+    "floral": "bg-[#F08619] text-white",
+    "verde": "bg-[#8CBB57] text-white",
+    "almizclado": "bg-[#6A1A1A] text-white",
+    "maderoso": "bg-[#EE7D17] text-white",
+    "oriental": "bg-[#FDC500] text-[#5C4017]",
+    "fougere": "bg-[#61B291] text-white",
+    "aldehídico": "bg-[#3BBFE3] text-white",
+    "aromático": "bg-[#3B98D5] text-white",
+    "especiado": "bg-[#E32636] text-white"
+  };
+
+  return mapping[firstWord] || "bg-slate-200 text-slate-700";
+};
+
+interface MapCardProps {
+  eq: any;
+  catalogProduct: Product | undefined;
+  gender: "Mujer" | "Hombre";
+  addedIds: Record<string, boolean>;
+  onAddProduct: (product: Product) => void;
+  setAddedIds: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  onViewDetails: () => void;
+}
+
+function MapCard({ eq, catalogProduct, gender, addedIds, onAddProduct, setAddedIds, onViewDetails }: MapCardProps) {
+  const isPremium = eq.code.startsWith("Q");
+  const [selectedSize, setSelectedSize] = useState<"100ml" | "50ml" | "20ml">("100ml");
+
+  const pId = catalogProduct ? catalogProduct.id : `custom-${eq.code.toLowerCase()}`;
+  const isAdded = addedIds[`${pId}${!isPremium ? `-${selectedSize}` : ""}`] || addedIds[pId];
+  const cardStyles = getQuadrantStyles(gender, eq.quadrantId, eq.code);
+
+  const handleAdd = () => {
+    let p = catalogProduct;
+    if (!p) {
+      p = {
+        id: `custom-${eq.code.toLowerCase()}`,
+        code: eq.code,
+        line: gender === "Mujer" ? "Mujer" : "Hombre",
+        name: eq.name,
+        inspiredBy: eq.inspiredBy,
+        brandReference: eq.brand,
+        gender: gender,
+        family: [eq.family],
+        aromaType: [eq.family],
+        mainNotes: ["Notas florales", "Esencias premium"],
+        occasion: ["Diario", "Salidas de noche"],
+        intensity: eq.code.startsWith("Q") || eq.code.endsWith("Elixir") ? "Intenso" : "Equilibrado",
+        format: isPremium ? (gender === "Mujer" ? "Red Parfums 100 ml" : "Black Parfums 100 ml") : "100 ml",
+        priceKey: isPremium ? "redBlack100" : "perfume100",
+        stock: "Consultar",
+        image: isPremium
+          ? (gender === "Mujer" ? "/images/perfume-red.png" : "/images/perfume-black.png")
+          : (gender === "Mujer" ? "/images/perfume-mujer.jpg" : "/images/perfume-hombre.jpg"),
+        tags: [eq.family.toLowerCase()],
+        description: `Fragancia equivalente premium de alta concentración inspirada en la mítica ${eq.inspiredBy} de ${eq.brand}.`
+      };
+    }
+
+    const productToCart = { ...p };
+    if (!isPremium) {
+      productToCart.format = selectedSize;
+      productToCart.priceKey = selectedSize === "100ml" ? "perfume100" : selectedSize === "50ml" ? "perfume50" : "perfume20";
+      productToCart.id = `${p.id}-${selectedSize}`;
+    }
+
+    onAddProduct(productToCart);
+    setAddedIds(prev => ({ ...prev, [productToCart.id]: true }));
+    setTimeout(() => {
+      setAddedIds(prev => ({ ...prev, [productToCart.id]: false }));
+    }, 2000);
+  };
+
+  return (
+    <div className={`p-4 rounded-xl border transition-all flex flex-col justify-between ${cardStyles.cardBg} ${cardStyles.cardBorder}`}>
+      <div>
+        <div className="flex justify-between items-start gap-2 mb-2">
+          <div className="flex items-center gap-1.5">
+            <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wider ${cardStyles.codeBg}`}>
+              {eq.code}
+            </span>
+            {isPremium && (
+              <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-gradient-to-r from-[#B8860B] to-[#D4AF37] text-white text-[9px] font-bold uppercase tracking-widest shadow-sm">
+                <Sparkles className="w-2.5 h-2.5 text-amber-100" />
+                ALTA GAMA
+              </span>
+            )}
+          </div>
+          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider ${getFamilyColor(eq.family)} shadow-sm`}>
+            {eq.family}
+          </span>
+        </div>
+        <h4 className={`font-bold text-sm truncate ${cardStyles.textColor}`} title={eq.name}>
+          {eq.name}
+        </h4>
+        <p className="text-xs text-slate-500 leading-snug mt-1">
+          Inspirado en: <strong className="text-slate-700">{eq.inspiredBy}</strong> ({eq.brand})
+        </p>
+      </div>
+
+      <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          {!isPremium ? (
+            <div className="flex bg-slate-100/80 rounded p-0.5 gap-0.5">
+              <button 
+                onClick={() => setSelectedSize("20ml")}
+                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "20ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
+              >
+                20ml
+              </button>
+              <button 
+                onClick={() => setSelectedSize("50ml")}
+                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "50ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
+              >
+                50ml
+              </button>
+              <button 
+                onClick={() => setSelectedSize("100ml")}
+                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "100ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
+              >
+                100ml
+              </button>
+            </div>
+          ) : (
+            <span className="text-[10px] text-[#8B6508] font-bold bg-[#FAF8F5] px-2 py-1 rounded border border-[#D4AF37]/30">
+              Premium 100ml
+            </span>
+          )}
+          
+          <div className="flex gap-1.5">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onViewDetails}
+              className="h-7 w-7 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-50"
+            >
+              <Eye className="w-3.5 h-3.5" />
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleAdd}
+              className={`h-7 px-2.5 rounded-full text-[10px] font-bold transition-all ${
+                isAdded
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                  : "bg-[#42362C] hover:bg-[#705E49] text-white"
+              }`}
+            >
+              {isAdded ? (
+                <Check className="w-3 h-3 mr-1" />
+              ) : (
+                <ShoppingBag className="w-3 h-3 mr-1" />
+              )}
+              {isAdded ? "Añadido" : "Elegir"}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function FragranceMap({ onAddProduct, initialGender = "Mujer" }: FragranceMapProps) {
+  const [gender, setGender] = useState<"Mujer" | "Hombre">(initialGender);
   const [selectedQuadrant, setSelectedQuadrant] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDetailProduct, setSelectedDetailProduct] = useState<Product | null>(null);
@@ -64,36 +351,36 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
           name: "Ligero & Cítrico-Acuático",
           description: "Frescura marina, cítricos limpios y energía",
           families: ["Maderoso Cítrico", "Cítrico Fresco", "Maderoso Verde", "Fougere Fresco"],
-          color: "from-sky-50 to-blue-50 hover:to-blue-100/50",
-          textColor: "text-sky-800",
-          border: "border-sky-200/60"
+          color: "from-cyan-50 to-blue-50 hover:to-blue-100/50",
+          textColor: "text-cyan-800",
+          border: "border-cyan-200/60"
         },
         {
           id: "q2",
           name: "Ligero & Maderoso-Aromático",
           description: "Elegancia relajada para el día, oficina y deporte",
           families: ["Maderoso Frutal", "Maderoso Floral", "Maderoso Aromático", "Aromático"],
-          color: "from-stone-50 to-amber-50 hover:to-amber-100/50",
-          textColor: "text-stone-800",
-          border: "border-stone-200/60"
+          color: "from-emerald-50 to-green-50 hover:to-green-100/50",
+          textColor: "text-emerald-800",
+          border: "border-emerald-200/60"
         },
         {
           id: "q3",
           name: "Intenso & Fougère-Especiado",
           description: "Aromas viriles, tradicionales y con presencia",
           families: ["Fougere Aromático", "Chypre Aromático"],
-          color: "from-indigo-50 to-slate-50 hover:to-indigo-100/50",
-          textColor: "text-indigo-800",
-          border: "border-indigo-200/60"
+          color: "from-violet-50 to-indigo-50 hover:to-indigo-100/50",
+          textColor: "text-violet-800",
+          border: "border-violet-200/60"
         },
         {
           id: "q4",
           name: "Intenso & Oriental-Maderoso",
           description: "Seducción nocturna, cueros ahumados y vainillas ricas",
           families: ["Oriental Frutal", "Fougere Maderoso", "Fougere Oriental", "Chypre Maderoso", "Maderoso Oriental", "Oriental Especiado"],
-          color: "from-amber-50 to-yellow-50 hover:to-yellow-100/50",
+          color: "from-amber-100/40 to-orange-50 hover:to-orange-100/50",
           textColor: "text-amber-900",
-          border: "border-amber-200/60"
+          border: "border-amber-200"
         }
       ];
     }
@@ -159,6 +446,11 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
       { code: "F08", name: "F-08 Paradox", inspiredBy: "Paradox", brand: "Prada", family: "Chypre Frutal", gender: "Mujer", quadrantId: "q3" },
       { code: "F49", name: "F-49 Nina", inspiredBy: "Nina", brand: "Nina Ricci", family: "Chypre Frutal", gender: "Mujer", quadrantId: "q3" },
       { code: "F14", name: "F-14 CH", inspiredBy: "CH", brand: "Carolina Herrera", family: "Floral Cítrico", gender: "Mujer", quadrantId: "q3" },
+      { code: "F18", name: "F-18 Carolina Herrera", inspiredBy: "Carolina Herrera", brand: "Carolina Herrera", family: "Floral Floral", gender: "Mujer", quadrantId: "q3" },
+      { code: "F20", name: "F-20 Eternity", inspiredBy: "Eternity", brand: "Calvin Klein", family: "Floral Floral", gender: "Mujer", quadrantId: "q3" },
+      { code: "F26", name: "F-26 Paris", inspiredBy: "Paris", brand: "Yves Saint Laurent", family: "Floral Floral", gender: "Mujer", quadrantId: "q3" },
+      { code: "F29", name: "F-29 212 Carolina Herrera", inspiredBy: "212 Carolina Herrera", brand: "Carolina Herrera", family: "Floral Floral", gender: "Mujer", quadrantId: "q3" },
+      { code: "F47", name: "F-47 La Vida es Bella Rosé", inspiredBy: "La Vida es Bella Rosé", brand: "Lancôme", family: "Floral Chypre", gender: "Mujer", quadrantId: "q3" },
 
       // Q4 (Intenso & Cálido-Oriental)
       { code: "F03", name: "F-03 Oscar de la Renta", inspiredBy: "Oscar de la Renta", brand: "Oscar de la Renta", family: "Floral Oriental", gender: "Mujer", quadrantId: "q4" },
@@ -186,6 +478,7 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
       { code: "Q05", name: "Q-05 Baccarat Rouge", inspiredBy: "Baccarat Rouge 540", brand: "Maison Francis Kurkdjian", family: "Oriental Floral", gender: "Mujer", quadrantId: "q4" },
       { code: "Q06", name: "Q-06 Bianco Latte", inspiredBy: "Bianco Latte", brand: "Giardini Di Toscana", family: "Cítrico Gourmand", gender: "Mujer", quadrantId: "q4" },
       { code: "Q07", name: "Q-07 Oriana", inspiredBy: "Oriana", brand: "Parfums de Marly", family: "Oriental Floral", gender: "Mujer", quadrantId: "q4" },
+      { code: "F09", name: "F-09 Tresor", inspiredBy: "Tresor", brand: "Lancôme", family: "Floral Frutal", gender: "Mujer", quadrantId: "q4" },
 
       // MASCULINAS
       // Q1 (Ligero & Cítrico-Acuático)
@@ -198,6 +491,7 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
       { code: "H01", name: "H-01 Drakkar Noir", inspiredBy: "Drakkar Noir", brand: "Guy Laroche", family: "Fougere Fresco", gender: "Hombre", quadrantId: "q1" },
       { code: "Q53", name: "Q-53 Silver Mountain Water", inspiredBy: "Silver Mountain Water", brand: "Creed", family: "Cítrico Fresco", gender: "Hombre", quadrantId: "q1" },
       { code: "Q58", name: "Q-58 L'immensité", inspiredBy: "L'immensité", brand: "Louis Vuitton", family: "Maderoso Cítrico", gender: "Hombre", quadrantId: "q1" },
+      { code: "H07", name: "H-07 212 Heroes Men", inspiredBy: "212 Heroes Men", brand: "Carolina Herrera", family: "Fougere Frutal", gender: "Hombre", quadrantId: "q1" },
 
       // Q2 (Ligero & Maderoso-Aromático)
       { code: "H06", name: "H-06 Polo Blue", inspiredBy: "Polo Blue", brand: "Ralph Lauren", family: "Maderoso Frutal", gender: "Hombre", quadrantId: "q2" },
@@ -247,7 +541,7 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
       { code: "Q59", name: "Q-59 Marly Althair", inspiredBy: "Althair", brand: "Parfums de Marly", family: "Maderoso Oriental", gender: "Hombre", quadrantId: "q4" }
     ];
 
-    return list;
+    return list.filter(item => item.gender === gender);
   }, [gender]);
 
   // Filtered list of equivalents
@@ -270,7 +564,13 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
       );
     }
 
-    return result;
+    return [...result].sort((a, b) => {
+      const aIsPremium = a.code.startsWith("Q");
+      const bIsPremium = b.code.startsWith("Q");
+      if (aIsPremium && !bIsPremium) return -1;
+      if (!aIsPremium && bIsPremium) return 1;
+      return a.code.localeCompare(b.code);
+    });
   }, [equivalentDatabase, selectedQuadrant, searchQuery]);
 
   // Resolve matching product in products database
@@ -307,10 +607,12 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
         mainNotes: ["Notas florales", "Esencias premium"],
         occasion: ["Diario", "Salidas de noche"],
         intensity: eq.code.startsWith("Q") || eq.code.endsWith("Elixir") ? "Intenso" : "Equilibrado",
-        format: eq.code.startsWith("Q") ? "Red & Black 100 ml" : "100 ml",
+        format: eq.code.startsWith("Q") ? (gender === "Mujer" ? "Red Parfums 100 ml" : "Black Parfums 100 ml") : "100 ml",
         priceKey: eq.code.startsWith("Q") ? "redBlack100" : "perfume100",
         stock: "Consultar",
-        image: gender === "Mujer" ? "/images/perfume-mujer.jpg" : "/images/perfume-hombre.jpg",
+        image: eq.code.startsWith("Q")
+          ? (gender === "Mujer" ? "/images/perfume-red.png" : "/images/perfume-black.png")
+          : (gender === "Mujer" ? "/images/perfume-mujer.jpg" : "/images/perfume-hombre.jpg"),
         tags: [eq.family.toLowerCase()],
         description: `Fragancia equivalente premium de alta concentración inspirada en la mítica ${eq.inspiredBy} de ${eq.brand}.`
       };
@@ -340,11 +642,13 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
         aromaType: ["Aromático"],
         mainNotes: ["Esencias finas", "Madera noble"],
         occasion: ["Diario"],
-        intensity: "Equilibrado",
-        format: "100 ml",
-        priceKey: "perfume100",
+        intensity: code.startsWith("Q") ? "Intenso" : "Equilibrado",
+        format: code.startsWith("Q") ? (gender === "Mujer" ? "Red Parfums 100 ml" : "Black Parfums 100 ml") : "100 ml",
+        priceKey: code.startsWith("Q") ? "redBlack100" : "perfume100",
         stock: "Consultar",
-        image: gender === "Mujer" ? "/images/perfume-mujer.jpg" : "/images/perfume-hombre.jpg",
+        image: code.startsWith("Q")
+          ? (gender === "Mujer" ? "/images/perfume-red.png" : "/images/perfume-black.png")
+          : (gender === "Mujer" ? "/images/perfume-mujer.jpg" : "/images/perfume-hombre.jpg"),
         tags: ["exclusivo"],
         description: `Fragancia equivalente premium inspirada en los listados del mapa de fragancias de Parfums de Parfums.`
       };
@@ -473,63 +777,17 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredEquivalents.map((eq) => {
                 const catalogProduct = getCatalogProduct(eq.code);
-                const pId = catalogProduct ? catalogProduct.id : `custom-${eq.code.toLowerCase()}`;
-                const isAdded = addedIds[pId];
-
                 return (
-                  <div
+                  <MapCard 
                     key={eq.code}
-                    className="p-4 rounded-xl border border-slate-100 bg-[#FAF9F6]/40 hover:bg-white hover:border-[#C6B9A5]/30 transition-all flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex justify-between items-start gap-2 mb-2">
-                        <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#42362C] text-white text-[11px] font-bold tracking-wider">
-                          {eq.code}
-                        </span>
-                        <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
-                          {eq.family}
-                        </span>
-                      </div>
-                      <h4 className="font-bold text-[#42362C] text-sm truncate" title={eq.name}>
-                        {eq.name}
-                      </h4>
-                      <p className="text-xs text-slate-500 leading-snug mt-1">
-                        Inspirado en: <strong className="text-slate-700">{eq.inspiredBy}</strong> ({eq.brand})
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                      <span className="text-xs text-[#8C785C] font-semibold">
-                        {eq.code.startsWith("Q") ? "Premium 100ml" : "100/50/20 ml"}
-                      </span>
-                      <div className="flex gap-1.5">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleViewDetails(eq.code)}
-                          className="h-8 w-8 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-50"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handleAdd(eq)}
-                          className={`h-8 px-3 rounded-full text-xs transition-all ${
-                            isAdded
-                              ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                              : "bg-[#42362C] hover:bg-[#705E49] text-white"
-                          }`}
-                        >
-                          {isAdded ? (
-                            <Check className="w-3.5 h-3.5 mr-1" />
-                          ) : (
-                            <ShoppingBag className="w-3.5 h-3.5 mr-1" />
-                          )}
-                          {isAdded ? "Añadido" : "Elegir"}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                    eq={eq}
+                    catalogProduct={catalogProduct}
+                    gender={gender}
+                    addedIds={addedIds}
+                    onAddProduct={onAddProduct}
+                    setAddedIds={setAddedIds}
+                    onViewDetails={() => handleViewDetails(eq.code)}
+                  />
                 );
               })}
             </div>
@@ -541,6 +799,26 @@ export function FragranceMap({ onAddProduct }: FragranceMapProps) {
               </button>
             </div>
           )}
+        </div>
+
+        {/* GLOSARIO DE FAMILIAS OLFATIVAS */}
+        <div className="mt-12 bg-white rounded-2xl border border-[#C6B9A5]/20 p-6 md:p-8">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-[#42362C]">Glosario de Familias Olfativas</h3>
+            <p className="text-[#8C785C] text-sm mt-2">Descubre los ingredientes y la personalidad detrás de cada familia olfativa</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {olfactoryFamilies.map((family) => (
+              <div key={family.id} className="flex flex-col sm:flex-row gap-4 border-b border-slate-50 pb-4 sm:border-0 sm:pb-0">
+                <div className={`shrink-0 sm:w-28 h-10 sm:h-auto py-2 sm:py-0 flex items-center justify-center rounded font-bold text-xs tracking-wider shadow-sm ${family.color} ${family.text}`}>
+                  {family.name}
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed text-justify">
+                  {family.desc}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

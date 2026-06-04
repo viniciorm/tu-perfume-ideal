@@ -1,32 +1,54 @@
-import { Sparkles } from "lucide-react";
+import { User, ShoppingBag, Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#C6B9A5]/10 bg-white/80 backdrop-blur-md shadow-sm">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-[#8C785C] animate-pulse" />
-          <span className="text-xl font-serif-luxury font-bold tracking-widest text-gradient-gold">
-            PARFUMS DE PARFUMS
-          </span>
-        </div>
-        <nav className="hidden md:flex items-center gap-6 text-xs uppercase tracking-wider font-semibold text-[#705E49]">
-          <a href="#" className="hover:text-[#42362C] transition-colors">Inicio</a>
-          <a href="#catalogo" className="hover:text-[#42362C] transition-colors">Catálogo</a>
-          <a href="#mapa-olfativo" className="hover:text-[#42362C] transition-colors">Mapa Olfativo</a>
-          <a href="#blog-aromas" className="hover:text-[#42362C] transition-colors">Aromas</a>
-          <a href="#faq" className="hover:text-[#42362C] transition-colors">Preguntas</a>
-        </nav>
-        <div className="flex items-center gap-3">
-          <a
-            href="#catalogo"
-            className="hidden sm:inline-flex bg-[#42362C] hover:bg-[#705E49] text-white px-4 py-2 rounded-full text-xs uppercase tracking-wider font-bold transition-all"
-          >
-            Explorar
-          </a>
-        </div>
+    <>
+      <div className="bg-[#4A151C] text-amber-50 text-xs font-bold text-center py-2 px-4 tracking-wide shadow-inner">
+        🎁 MES DEL PADRE: 10% DE DESCUENTO EN TODOS LOS PEDIDOS (5 al 17 Junio) | ENVÍOS MARTES Y JUEVES (POR PAGAR)
       </div>
-    </header>
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#0F141A] shadow-md relative">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+          <Link to="/" className="flex flex-col items-start gap-0.5 group">
+            <span className="font-serif italic text-3xl text-white tracking-wide group-hover:text-[#C6B9A5] transition-colors leading-none">Parfums</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-[#C6B9A5] ml-4 font-bold">D' Parfums</span>
+          </Link>
+          
+          <nav className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.15em] font-semibold text-slate-300">
+            <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
+            <Link to="/dia-del-padre" className="hover:text-white transition-colors">Hombres</Link>
+            <Link to="/mujer" className="hover:text-white transition-colors">Mujer</Link>
+            <Link to="/packs" className="hover:text-white transition-colors">Pack Promocional</Link>
+            <Link to="/#ofertas" className="hover:text-white transition-colors">Ofertas</Link>
+          </nav>
+          
+          <div className="flex items-center gap-4 md:gap-6 text-white">
+            <button className="hover:text-[#C6B9A5] transition-colors hidden md:block">
+              <User className="w-5 h-5" />
+            </button>
+            <button className="hover:text-[#C6B9A5] transition-colors">
+              <ShoppingBag className="w-5 h-5" />
+            </button>
+            <button className="md:hidden hover:text-[#C6B9A5] transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-20 left-0 w-full bg-[#0F141A] border-b border-white/5 shadow-lg p-4 flex flex-col gap-4 text-xs uppercase tracking-[0.15em] font-semibold text-slate-300 z-50">
+            <Link to="/" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
+            <Link to="/dia-del-padre" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Hombres</Link>
+            <Link to="/mujer" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Mujer</Link>
+            <Link to="/packs" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Pack Promocional</Link>
+            <Link to="/#ofertas" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Ofertas</Link>
+          </div>
+        )}
+      </header>
+    </>
   );
 }
 

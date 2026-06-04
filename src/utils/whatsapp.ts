@@ -54,25 +54,34 @@ export function createSelectionWhatsappLink(
 
   let totalAmount = 0;
   
+  let discountEligibleAmount = 0;
+  
   selectedProducts.forEach(({ product, quantity }, index) => {
     const priceInfo = priceList[product.priceKey as keyof typeof priceList];
-    const priceVal = priceInfo ? priceInfo.sale : 0;
+    const priceVal = product.customPrice ?? (priceInfo ? priceInfo.sale : 0);
     const itemTotal = priceVal * quantity;
     totalAmount += itemTotal;
+    
+    // Sólo Perfumes Clásicos y Premium
+    if (!product.tags?.includes("pack") && product.priceKey !== "custom") {
+      discountEligibleAmount += itemTotal;
+    }
 
-    const priceText = priceInfo ? formatPrice(priceInfo.sale) : "Consultar";
+    const priceText = product.customPrice ? formatPrice(product.customPrice) : (priceInfo ? formatPrice(priceInfo.sale) : "Consultar");
     
     let lineIndicator = "🌸 Clásica Dama";
     if (product.code.startsWith("Q-0") || product.code.startsWith("Q0")) {
-      lineIndicator = "🔴 Colección RED";
-    } else if (product.code.startsWith("Q-5") || product.code.startsWith("Q5")) {
-      lineIndicator = "⚫ Colección BLACK";
+      lineIndicator = "💎 Premium Dama";
+    } else if (product.code.startsWith("Q-1") || product.code.startsWith("Q1")) {
+      lineIndicator = "💎 Premium Varón";
     } else if (product.code.startsWith("H")) {
       lineIndicator = "🔵 Clásica Varón";
     } else if (product.code.startsWith("L")) {
       lineIndicator = "💧 Lavit Splash";
     } else if (product.code.startsWith("J")) {
       lineIndicator = "🦄 Teen Line";
+    } else if (product.tags?.includes("pack")) {
+      lineIndicator = "🎁 Pack Promocional";
     }
 
     text += `*${index + 1}. [${product.code}] ${product.inspiredBy}*\n`;
@@ -85,8 +94,15 @@ export function createSelectionWhatsappLink(
     text += `\n`;
   });
 
+  const discount = discountEligibleAmount * 0.1;
+  const totalPayable = totalAmount - discount;
+
   text += `──────────────────\n`;
-  text += `💰 *TOTAL ESTIMADO:* ${formatPrice(totalAmount)}\n`;
+  text += `🧾 *Subtotal:* ${formatPrice(totalAmount)}\n`;
+  text += `🎁 *Descuento Día del Padre (10%):* -${formatPrice(discount)}\n`;
+  text += `💰 *TOTAL A PAGAR:* ${formatPrice(totalPayable)}\n`;
+  text += `──────────────────\n`;
+  text += `*Nota Día del Padre:* Promo válida del 5 al 17 de junio. Los envíos se pagan aparte. Pedidos enviados los martes y jueves (por pagar).\n`;
   text += `──────────────────\n`;
 
   if (wizardAnswers && Object.keys(wizardAnswers).length > 0) {
