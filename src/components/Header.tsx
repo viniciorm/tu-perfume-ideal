@@ -22,7 +22,7 @@ export function Header() {
             <Link to="/dia-del-padre" className="hover:text-white transition-colors">Hombres</Link>
             <Link to="/mujer" className="hover:text-white transition-colors">Mujer</Link>
             <Link to="/packs" className="hover:text-white transition-colors">Pack Promocional</Link>
-            <Link to="/catalogo" className="hover:text-white transition-colors">Catálogo</Link>
+            <Link to="/#ofertas" className="hover:text-white transition-colors">Ofertas</Link>
             <a href="https://parfums.cl/clientes/incorporar?referido=10984051-3" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-[#C6B9A5]">Ser Socio</a>
           </nav>
           
@@ -45,7 +45,7 @@ export function Header() {
             <Link to="/dia-del-padre" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Hombres</Link>
             <Link to="/mujer" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Mujer</Link>
             <Link to="/packs" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Pack Promocional</Link>
-            <Link to="/catalogo" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Catálogo</Link>
+            <Link to="/#ofertas" className="hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>Ofertas</Link>
             <a href="https://parfums.cl/clientes/incorporar?referido=10984051-3" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-[#C6B9A5]" onClick={() => setIsMenuOpen(false)}>Ser Socio</a>
           </div>
         )}

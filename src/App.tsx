@@ -22,6 +22,7 @@ import { Product } from './types/product';
 import { WizardAnswers } from './types/wizard';
 import { Button } from './components/ui/button';
 import { createNotFoundWhatsappLink } from './utils/whatsapp';
+import { HeroBanner } from './components/HeroBanner';
 
 export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -73,14 +74,14 @@ export default function App() {
       <Header />
       
       <Routes>
-        <Route path="/" element={<FathersDayLanding onAddProduct={handleSelectProduct} />} />
         <Route path="/hombres" element={<FathersDayLanding onAddProduct={handleSelectProduct} />} />
         <Route path="/dia-del-padre" element={<FathersDayLanding onAddProduct={handleSelectProduct} />} />
         <Route path="/mujer" element={<WomenPerfumesLanding onAddProduct={handleSelectProduct} />} />
         <Route path="/packs" element={<PacksLanding onAddProduct={handleSelectProduct} />} />
         
-        <Route path="/catalogo" element={
+        <Route path="/" element={
           <>
+            <HeroBanner />
             <main className="container mx-auto px-4 py-8">
               <div className="mb-12">
                 {!showWizard ? (
