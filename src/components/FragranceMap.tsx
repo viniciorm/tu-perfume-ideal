@@ -583,47 +583,6 @@ export function FragranceMap({ onAddProduct, initialGender = "Mujer" }: Fragranc
     );
   };
 
-  const handleAdd = (eq: typeof equivalentDatabase[0]) => {
-    const p = getCatalogProduct(eq.code);
-    if (p) {
-      onAddProduct(p);
-      setAddedIds(prev => ({ ...prev, [p.id]: true }));
-      setTimeout(() => {
-        setAddedIds(prev => ({ ...prev, [p.id]: false }));
-      }, 2000);
-    } else {
-      // If product is not in local sample but is in PDF list, construct a quick custom catalog item
-      // to allow ordering it anyway! This fulfills catalog completeness.
-      const customProduct: Product = {
-        id: `custom-${eq.code.toLowerCase()}`,
-        code: eq.code,
-        line: gender === "Mujer" ? "Mujer" : "Hombre",
-        name: eq.name,
-        inspiredBy: eq.inspiredBy,
-        brandReference: eq.brand,
-        gender: gender,
-        family: [eq.family],
-        aromaType: [eq.family],
-        mainNotes: ["Notas florales", "Esencias premium"],
-        occasion: ["Diario", "Salidas de noche"],
-        intensity: eq.code.startsWith("Q") || eq.code.endsWith("Elixir") ? "Intenso" : "Equilibrado",
-        format: eq.code.startsWith("Q") ? (gender === "Mujer" ? "Red Parfums 100 ml" : "Black Parfums 100 ml") : "100 ml",
-        priceKey: eq.code.startsWith("Q") ? "redBlack100" : "perfume100",
-        stock: "Consultar",
-        image: eq.code.startsWith("Q")
-          ? (gender === "Mujer" ? "/images/perfume-red.png" : "/images/perfume-black.png")
-          : (gender === "Mujer" ? "/images/perfume-mujer.jpg" : "/images/perfume-hombre.jpg"),
-        tags: [eq.family.toLowerCase()],
-        description: `Fragancia equivalente premium de alta concentración inspirada en la mítica ${eq.inspiredBy} de ${eq.brand}.`
-      };
-      onAddProduct(customProduct);
-      setAddedIds(prev => ({ ...prev, [customProduct.id]: true }));
-      setTimeout(() => {
-        setAddedIds(prev => ({ ...prev, [customProduct.id]: false }));
-      }, 2000);
-    }
-  };
-
   const handleViewDetails = (code: string) => {
     const p = getCatalogProduct(code);
     if (p) {

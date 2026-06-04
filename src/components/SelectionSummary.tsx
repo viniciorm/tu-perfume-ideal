@@ -11,10 +11,9 @@ interface SelectionSummaryProps {
   selectedProducts: { product: Product; quantity: number }[];
   wizardAnswers?: WizardAnswers;
   onClear: () => void;
-  onRemove: (productId: string) => void;
 }
 
-export function SelectionSummary({ selectedProducts, wizardAnswers, onClear, onRemove }: SelectionSummaryProps) {
+export function SelectionSummary({ selectedProducts, wizardAnswers, onClear }: SelectionSummaryProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (selectedProducts.length === 0) return null;

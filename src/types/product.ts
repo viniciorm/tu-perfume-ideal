@@ -6,6 +6,7 @@ export type ProductLine =
   | "Red"
   | "Black"
   | "Lavit"
+  | "Lavit Edición Carnaval"
   | "Teen Girl"
   | "Teen Boy"
   | "S-400"
@@ -27,7 +28,7 @@ export type Product = {
   intensity: "Ligero" | "Fresco" | "Equilibrado" | "Cálido" | "Intenso";
   temperature?: "Fresco" | "Cálido" | "Neutro";
   format: string;
-  priceKey: keyof typeof priceList;
+  priceKey: keyof typeof priceList | "custom";
   customPrice?: number;
   stock: "Disponible" | "Pocas unidades" | "Agotado" | "Consultar";
   image: string;

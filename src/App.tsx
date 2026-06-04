@@ -15,7 +15,6 @@ import { SelectionSummary } from './components/SelectionSummary';
 import { Footer } from './components/Footer';
 import { FAQ } from './components/FAQ';
 import { FragranceMap } from './components/FragranceMap';
-import { FloatingBanner } from './components/FloatingBanner';
 import { AromaBlog } from './components/AromaBlog';
 import { products } from './data/products';
 import { searchProducts, getProductScore } from './utils/matching';
@@ -203,7 +202,6 @@ export default function App() {
         selectedProducts={cart}
         wizardAnswers={showWizard ? wizardAnswers : undefined}
         onClear={() => setCart([])}
-        onRemove={handleRemoveFromCart}
       />
     </div>
   );

@@ -1,6 +1,5 @@
 import { Product } from "../types/product";
 import { PlusCircle } from "lucide-react";
-import { formatPrice } from "../utils/formatters";
 
 interface PacksCatalogSectionProps {
   onAddProduct: (product: Product) => void;
@@ -46,7 +45,7 @@ export function PacksCatalogSection({ onAddProduct }: PacksCatalogSectionProps) 
       name: `Pack ${packInfo.name}`,
       inspiredBy: packInfo.name,
       brandReference: "Pack Promocional",
-      line: gender,
+      line: "Pack",
       gender: gender as any,
       family: ["Pack"],
       aromaType: ["Pack"],
