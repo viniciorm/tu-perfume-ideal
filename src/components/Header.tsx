@@ -12,9 +12,9 @@ export function Header() {
       </div>
       <header className="border-b border-white/5 bg-[#0F141A] relative">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <Link to="/" className="flex flex-col items-start gap-0.5 group">
-            <span className="font-serif italic text-3xl text-white tracking-wide group-hover:text-[#C6B9A5] transition-colors leading-none">Parfums</span>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-[#C6B9A5] ml-4 font-bold">D' Parfums</span>
+          <Link to="/" className="flex flex-col items-start justify-center group">
+            <span className="text-xl font-bold text-white tracking-wide group-hover:text-[#C6B9A5] transition-colors leading-none">Tu Perfume Ideal</span>
+            <span className="text-[10px] text-[#C6B9A5] uppercase tracking-[0.1em] mt-1 opacity-80">Parfums d Parfums</span>
           </Link>
           
           <nav className="hidden md:flex items-center gap-8 text-xs uppercase tracking-[0.15em] font-semibold text-slate-300">
