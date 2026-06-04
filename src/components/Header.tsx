@@ -6,11 +6,11 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <>
+    <div className="sticky top-0 z-50 w-full flex flex-col shadow-md">
       <div className="bg-[#4A151C] text-amber-50 text-xs font-bold text-center py-2 px-4 tracking-wide shadow-inner">
         🎁 MES DEL PADRE: 10% DE DESCUENTO EN TODOS LOS PEDIDOS (5 al 17 Junio) | ENVÍOS MARTES Y JUEVES (POR PAGAR)
       </div>
-      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#0F141A] shadow-md relative">
+      <header className="border-b border-white/5 bg-[#0F141A] relative">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <Link to="/" className="flex flex-col items-start gap-0.5 group">
             <span className="font-serif italic text-3xl text-white tracking-wide group-hover:text-[#C6B9A5] transition-colors leading-none">Parfums</span>
@@ -48,7 +48,7 @@ export function Header() {
           </div>
         )}
       </header>
-    </>
+    </div>
   );
 }
 
