@@ -66,9 +66,6 @@ export default function App() {
     });
   };
 
-  const handleRemoveFromCart = (productId: string) => {
-    setCart(prev => prev.filter(p => p.product.id !== productId));
-  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans pb-32">
