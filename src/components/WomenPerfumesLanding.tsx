@@ -36,7 +36,7 @@ export function WomenPerfumesLanding({ onAddProduct }: WomenPerfumesLandingProps
   return (
     <div className="font-sans bg-[#F9F6F6] min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#4A151C] to-[#2D0A10] text-white overflow-hidden relative">
+      <section className="bg-gradient-to-br from-fuchsia-950 via-[#6a0d2a] to-rose-950 text-white overflow-hidden relative">
         <div className="container mx-auto px-4 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8 z-10">
             <div>

@@ -23,6 +23,8 @@ import { WizardAnswers } from './types/wizard';
 import { Button } from './components/ui/button';
 import { createNotFoundWhatsappLink } from './utils/whatsapp';
 import { HeroBanner } from './components/HeroBanner';
+import { Toaster } from './components/ui/toaster';
+import { useToast } from './hooks/use-toast';
 
 export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,6 +33,8 @@ export default function App() {
   
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cart, setCart] = useState<{ product: Product; quantity: number }[]>([]);
+  const [isCartExpanded, setIsCartExpanded] = useState(false);
+  const { toast } = useToast();
 
   const displayedProducts = useMemo(() => {
     let result = products;
@@ -65,13 +69,38 @@ export default function App() {
       }
       return [...prev, { product, quantity: 1 }];
     });
+    
+    toast({
+      title: "Agregado al carrito",
+      description: `✅ ${product.name} ${product.format ? product.format : ''}`,
+      duration: 3000,
+    });
+    
+    // Auto-open cart summary
+    if (!isCartExpanded) {
+      setIsCartExpanded(true);
+    }
+  };
+
+  const handleUpdateQuantity = (productId: string, delta: number) => {
+    setCart(prev => prev.map(p => {
+      if (p.product.id === productId) {
+        const newQuantity = Math.max(1, p.quantity + delta);
+        return { ...p, quantity: newQuantity };
+      }
+      return p;
+    }));
+  };
+
+  const handleRemoveProduct = (productId: string) => {
+    setCart(prev => prev.filter(p => p.product.id !== productId));
   };
 
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans pb-32">
       <SEOHead />
-      <Header />
+      <Header cartCount={cart.reduce((acc, curr) => acc + curr.quantity, 0)} onOpenCart={() => setIsCartExpanded(true)} />
       
       <Routes>
         <Route path="/hombres" element={<FathersDayLanding onAddProduct={handleSelectProduct} />} />
@@ -133,6 +162,12 @@ export default function App() {
                 )}
               </div>
 
+              {!showWizard && !searchTerm && (
+                <div className="mb-12 border-b border-slate-200 pb-12">
+                  <FragranceMap onAddProduct={handleSelectProduct} />
+                </div>
+              )}
+
               {/* Resultados */}
               {(!showWizard || wizardAnswers.format) && (
                 <div id="catalogo">
@@ -178,7 +213,6 @@ export default function App() {
 
             {!showWizard && !searchTerm && (
               <div className="container mx-auto px-4">
-                <FragranceMap onAddProduct={handleSelectProduct} />
                 <AromaBlog />
               </div>
             )}
@@ -201,7 +235,12 @@ export default function App() {
         selectedProducts={cart}
         wizardAnswers={showWizard ? wizardAnswers : undefined}
         onClear={() => setCart([])}
+        isExpanded={isCartExpanded}
+        setIsExpanded={setIsCartExpanded}
+        updateQuantity={handleUpdateQuantity}
+        removeProduct={handleRemoveProduct}
       />
+      <Toaster />
     </div>
   );
 }

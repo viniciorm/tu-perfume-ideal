@@ -1,21 +1,22 @@
-import { useState } from "react";
 import { Product } from "../types/product";
 import { WizardAnswers } from "../types/wizard";
 import { Button } from "./ui/button";
 import { priceList } from "../data/prices";
 import { formatPrice } from "../utils/formatters";
 import { createSelectionWhatsappLink } from "../utils/whatsapp";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, Trash2, Minus, Plus } from "lucide-react";
 
 interface SelectionSummaryProps {
   selectedProducts: { product: Product; quantity: number }[];
   wizardAnswers?: WizardAnswers;
   onClear: () => void;
+  isExpanded: boolean;
+  setIsExpanded: (val: boolean) => void;
+  updateQuantity: (id: string, delta: number) => void;
+  removeProduct: (id: string) => void;
 }
 
-export function SelectionSummary({ selectedProducts, wizardAnswers, onClear }: SelectionSummaryProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+export function SelectionSummary({ selectedProducts, wizardAnswers, onClear, isExpanded, setIsExpanded, updateQuantity, removeProduct }: SelectionSummaryProps) {
   if (selectedProducts.length === 0) return null;
 
   let totalEstimated = 0;
@@ -85,13 +86,24 @@ export function SelectionSummary({ selectedProducts, wizardAnswers, onClear }: S
                 const itemTotal = price * quantity;
                 
                 return (
-                  <div key={product.id} className="flex justify-between text-sm items-start">
-                    <span className="text-slate-700 leading-tight pr-4">
-                      <span className="font-bold text-[#0B121A] mr-1.5">{quantity}x</span>
-                      <span className="text-xs text-slate-500 mr-1">[{product.code}]</span>
-                      <span className="font-medium">{product.name}</span>
-                    </span>
-                    <span className="font-bold text-[#0B121A] whitespace-nowrap">{formatPrice(itemTotal)}</span>
+                  <div key={product.id} className="flex justify-between text-sm items-center py-2 border-b border-slate-50 last:border-0">
+                    <div className="flex-1 pr-4">
+                      <div className="text-slate-700 leading-tight mb-2">
+                        <span className="text-[10px] text-slate-400 mr-1 bg-slate-100 px-1 py-0.5 rounded">[{product.code}]</span>
+                        <span className="font-semibold text-slate-800">{product.name} {product.format ? `(${product.format})` : ''}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center border border-slate-200 rounded-md bg-slate-50">
+                          <button onClick={(e) => { e.stopPropagation(); updateQuantity(product.id, -1); }} className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200 rounded-l-md transition-colors"><Minus size={14} /></button>
+                          <span className="w-6 text-center text-xs font-bold text-slate-800">{quantity}</span>
+                          <button onClick={(e) => { e.stopPropagation(); updateQuantity(product.id, 1); }} className="p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200 rounded-r-md transition-colors"><Plus size={14} /></button>
+                        </div>
+                        <button onClick={(e) => { e.stopPropagation(); removeProduct(product.id); }} className="text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded p-1 transition-colors" title="Eliminar">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="font-bold text-[#0B121A] whitespace-nowrap text-right pt-2 self-start">{formatPrice(itemTotal)}</div>
                   </div>
                 );
               })}

@@ -41,7 +41,7 @@ export function PremiumCatalogSection({ products, onAddProduct }: PremiumCatalog
                   </div>
                   <div className="w-full xl:w-7/12">
                     <p className="text-sm md:text-base text-slate-300 font-light leading-normal text-center xl:text-left">
-                      Elegancia en su máxima expresión. Misteriosa, refinada y magnética. <strong className="font-bold text-white">BLACK</strong> es el equilibrio perfecto entre sofisticación y carácter, diseñada para quienes buscan distinción.
+                      Fragancias exclusivas inspiradas en perfumería nicho internacional.
                     </p>
                   </div>
                 </div>
@@ -126,7 +126,7 @@ export function PremiumCatalogSection({ products, onAddProduct }: PremiumCatalog
                   </div>
                   <div className="w-full xl:w-7/12">
                     <p className="text-sm md:text-base text-white/90 font-light leading-normal text-center xl:text-left">
-                      La intensidad que enciende los sentidos. Audaz, envolvente y sofisticada. <strong className="font-bold text-white">RED</strong> despierta emociones con su carácter seductor, revelando un aroma inolvidable.
+                      Fragancias exclusivas inspiradas en perfumería nicho internacional.
                     </p>
                   </div>
                 </div>

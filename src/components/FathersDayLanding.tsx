@@ -36,7 +36,7 @@ export function FathersDayLanding({ onAddProduct }: FathersDayLandingProps) {
   return (
     <div className="font-sans bg-[#EBE9E4] min-h-screen">
       {/* Hero Section */}
-      <section className="bg-[#0B121A] text-white overflow-hidden relative">
+      <section className="bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 text-white overflow-hidden relative">
         <div className="container mx-auto px-4 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8 z-10">
             <div>
@@ -117,7 +117,7 @@ export function FathersDayLanding({ onAddProduct }: FathersDayLandingProps) {
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Tarjeta Premium */}
-          <div className="rounded-lg overflow-hidden bg-[#0A0A0A] flex flex-col md:flex-row items-center justify-between p-8 group border border-[#1A1A1A]">
+          <div className="rounded-lg overflow-hidden bg-slate-900 flex flex-col md:flex-row items-center justify-between p-8 group border border-slate-800">
             <div className="z-20 md:w-1/2 space-y-4 text-center md:text-left mb-6 md:mb-0">
               <h3 className="text-2xl text-white tracking-widest font-light">LÍNEA PREMIUM</h3>
               <p className="text-slate-400 font-light leading-relaxed">
@@ -140,7 +140,7 @@ export function FathersDayLanding({ onAddProduct }: FathersDayLandingProps) {
           </div>
 
           {/* Tarjeta Clásico */}
-          <div className="rounded-lg overflow-hidden bg-[#243441] flex flex-col md:flex-row items-center justify-between p-8 group border border-[#2A3A4A]">
+          <div className="rounded-lg overflow-hidden bg-cyan-950 flex flex-col md:flex-row items-center justify-between p-8 group border border-cyan-900">
             <div className="z-20 md:w-1/2 space-y-4 text-center md:text-left mb-6 md:mb-0">
               <h3 className="text-2xl text-white tracking-widest font-light">PERFUME CLÁSICO</h3>
               <p className="text-slate-300 font-light leading-relaxed">
@@ -224,7 +224,7 @@ export function FathersDayLanding({ onAddProduct }: FathersDayLandingProps) {
 
 
       {/* Trust Banner 2 */}
-      <section className="bg-[#0B121A] py-12 text-white">
+      <section className="bg-slate-900 py-12 text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center text-center sm:text-left px-4">

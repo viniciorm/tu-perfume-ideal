@@ -2,7 +2,7 @@ import { User, ShoppingBag, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-export function Header() {
+export function Header({ cartCount = 0, onOpenCart }: { cartCount?: number, onOpenCart?: () => void }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -30,8 +30,13 @@ export function Header() {
             <button className="hover:text-[#C6B9A5] transition-colors hidden md:block">
               <User className="w-5 h-5" />
             </button>
-            <button className="hover:text-[#C6B9A5] transition-colors">
+            <button className="hover:text-[#C6B9A5] transition-colors relative" onClick={onOpenCart}>
               <ShoppingBag className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 bg-rose-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center">
+                  {cartCount}
+                </span>
+              )}
             </button>
             <button className="md:hidden hover:text-[#C6B9A5] transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -1,9 +1,33 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 export function HeroBanner() {
   return (
     <div className="w-full relative overflow-hidden mb-12">
+      {/* Propuesta de valor */}
+      <div className="container mx-auto px-4 py-12 md:py-16 text-center max-w-4xl">
+        <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-800 mb-6">
+          Descubre Tu Fragancia
+        </h1>
+        <p className="text-lg md:text-xl text-slate-600 mb-8 font-light leading-relaxed">
+          Perfumes inspirados en fragancias de lujo, con excelente duración y una fracción del precio de las marcas originales.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm md:text-base text-slate-700 font-medium">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+            <span>Alta duración y fijación</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+            <span>Más de 100 aromas</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+            <span>Formatos de 20, 50 y 100 ml</span>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2">
         
         {/* Colección Hombres Premium */}

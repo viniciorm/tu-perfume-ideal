@@ -15,10 +15,11 @@ export function ProductCard({ product, onSelect, onViewDetail }: ProductCardProp
   const isPremium = product.code.startsWith("Q") || product.tags.includes("premium");
   const isClassicPerfume = !isPremium && (product.line === "Mujer" || product.line === "Hombre");
 
-  const [selectedSize, setSelectedSize] = useState<"100ml" | "50ml" | "20ml">("100ml");
+  const [selectedSize, setSelectedSize] = useState<"100ml" | "50ml" | "20ml" | null>(null);
 
   const getPriceKey = () => {
     if (isClassicPerfume) {
+      if (!selectedSize) return "perfume20"; // Used for 'Desde' base price fallback if needed
       if (selectedSize === "100ml") return "perfume100";
       if (selectedSize === "50ml") return "perfume50";
       return "perfume20";
@@ -28,17 +29,32 @@ export function ProductCard({ product, onSelect, onViewDetail }: ProductCardProp
 
   const currentPriceKey = getPriceKey();
   const priceInfo = priceList[currentPriceKey as keyof typeof priceList];
-  const price = priceInfo ? formatPrice(priceInfo.sale) : "Consultar";
+  
+  const price = isClassicPerfume && !selectedSize 
+    ? "Desde $6.500" 
+    : (priceInfo ? formatPrice(priceInfo.sale) : "Consultar");
 
   const handleSelect = () => {
+    if (isClassicPerfume && !selectedSize) {
+      const sizeToUse = "100ml";
+      setSelectedSize(sizeToUse);
+      const productToCart = { ...product, format: sizeToUse, priceKey: "perfume100" as any, id: `${product.id}-${sizeToUse}` };
+      onSelect(productToCart);
+      return;
+    }
+    
     const productToCart = { ...product };
-    if (isClassicPerfume) {
+    if (isClassicPerfume && selectedSize) {
       productToCart.format = selectedSize;
-      productToCart.priceKey = currentPriceKey as keyof typeof priceList;
+      productToCart.priceKey = currentPriceKey as any;
       productToCart.id = `${product.id}-${selectedSize}`;
     }
     onSelect(productToCart);
   };
+
+  const displayImage = isClassicPerfume && selectedSize
+    ? `/images/frasco-${product.gender?.toLowerCase() || 'unisex'}-${selectedSize}.png`
+    : product.image;
 
   // Determinar color de fondo basado en familia olfativa principal
   const mainFamily = product.family[0]?.toLowerCase() || "";
@@ -98,9 +114,9 @@ export function ProductCard({ product, onSelect, onViewDetail }: ProductCardProp
         )}
 
         {/* Frasquito en esquina sutil */}
-        {product.image && (
+        {displayImage && (
           <img 
-            src={product.image} 
+            src={displayImage} 
             alt="frasco" 
             className="absolute bottom-2 right-2 w-12 h-12 object-contain opacity-40 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-md"
             onError={(e) => {
@@ -179,7 +195,7 @@ export function ProductCard({ product, onSelect, onViewDetail }: ProductCardProp
           )}
 
           <div className="flex items-center justify-between mb-4">
-            <span className={`text-xl font-bold ${isPremium ? "text-[#8B6508]" : "text-primary"}`}>
+            <span className={`text-xl font-bold ${isPremium ? "text-[#8B6508]" : "text-primary"} ${isClassicPerfume && !selectedSize ? 'text-lg text-slate-600' : ''}`}>
               {price}
             </span>
             {product.stock !== "Disponible" ? (
