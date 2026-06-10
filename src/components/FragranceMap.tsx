@@ -241,21 +241,24 @@ function MapCard({ eq, catalogProduct, gender, addedIds, onAddProduct, setAddedI
             <div className="flex bg-slate-100/80 rounded p-0.5 gap-0.5">
               <button 
                 onClick={() => setSelectedSize("20ml")}
-                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "20ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
+                className={`flex flex-col items-center justify-center text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "20ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
               >
-                20ml
+                <span>20ml</span>
+                <span className="text-[8px] font-medium">$6.500</span>
               </button>
               <button 
                 onClick={() => setSelectedSize("50ml")}
-                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "50ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
+                className={`flex flex-col items-center justify-center text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "50ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
               >
-                50ml
+                <span>50ml</span>
+                <span className="text-[8px] font-medium">$12.500</span>
               </button>
               <button 
                 onClick={() => setSelectedSize("100ml")}
-                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "100ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
+                className={`flex flex-col items-center justify-center text-[9px] font-bold px-1.5 py-0.5 rounded-sm transition-colors ${selectedSize === "100ml" ? "bg-white shadow-sm text-slate-800" : "text-slate-500 hover:text-slate-700"}`}
               >
-                100ml
+                <span>100ml</span>
+                <span className="text-[8px] font-medium">$19.900</span>
               </button>
             </div>
           ) : (
